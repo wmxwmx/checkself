@@ -1,0 +1,8 @@
+activity 启动过程
+
+问题
+ 1 activity创建时机
+ 2 系统第一个activity的启动过程
+ 3 一个activity启动另一个activity时候两个activity的交叉顺序
+ 4 各个生命周期区别和特殊注意事项
+ 5 activity启动模式和回收站

@@ -1,0 +1,71 @@
+
+view事件分发
+
+
+Activity --> window --> decorView -->
+
+
+fun dispatchTouchEvent(ev : MotionEvent) : Boolean{
+
+  if(onInterceptTouchEvent()){
+
+    var touchListenerResult : Boolean = listener.onEvent()
+
+    return if (!touchListenerResult) onTouchEvent() else touchListenerResult
+
+    //onTouchEvent:up事件调用OnClickListener
+    setOnClickListeenr(){
+    }
+  }else{
+    var childrenDispatchTouchEventResult = children.dispatchTouchEvent
+    return
+     if (childrenDispatchTouchEventResult){
+      true
+    }else{
+        var touchListenerResult : Boolean = listener.onEvent()
+
+        if (!touchListenerResult) onTouchEvent() else touchListenerResult
+    }
+  }
+
+}
+
+对于ViewGroup的事件传递还有如下规则：
+
+if（action == Down || mFirstTouchTarget != null）{
+
+mFirstTouchTarget:如果没有子元素或者子元素没有处理既：子元素没有处理，mFirstTouchTarget = true
+否则子元素处理后，mFirstTouchTarget就默认指向此子元素，就不为空
+
+
+//r如果是down事件，或者事件被孩子处理过才会调用onInterceptTouchEvent（）
+
+但是调用˙之前会判断一个标志位disallowIntercept : 此标志位为true表示不允许viewgrouop拦截up和move事件
+
+子view 设置requestDisallowInterceptTouchEvent（false 、true）来改变之前会判断一个标志位disallowIntercept，
+ View的拦截位可以用于滑动冲突的解决
+设置true后父view将无法拦截除ActionDown以外的其他事件但是不包括ActionDown，因为actionDown时拦截位会重置(resteTouchState())
+
+if（！disallowIntercept）{
+   onInterceptTouchEvent（）
+   }else{
+   false//你不用判断直接不允许拦截
+   }
+
+}else{//也就是mFirstTouchTarget == null:没有子元素处理，也就是我；拦截了事件 &&action != Down
+true:这种情况下就默认拦截了
+也就是当我拦截了down事件后年，那么此次剩余系列事件 move up讲不再调用disallowIntercept（）判断，而是直接拦截
+}
+
+
+
+ -->View
+      （不确定,具体View决定）             （默认为false）
+if（onClickable == true || onLongClickable == true ）
+{
+消耗事件
+}
+
+
+
+
